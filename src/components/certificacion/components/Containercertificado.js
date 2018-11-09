@@ -31,25 +31,33 @@ const styles = theme => ({
 });
 
 function getSteps() {
-  return ['Seleccionar certificado', 'Buscar Certificado', ];
+  return ['document', 'Certificate', ];
 }
 
-function getStepContent(stepIndex) {
-  switch (stepIndex) {
-    case 0:
-      return <Certificados />;
-    case 1:
-      return "ingresa tu cedula";
-   
-    default:
-      return <Error />;
+
+class ContainerCertificado extends React.Component {
+  getStepContent(stepIndex) {
+    switch (stepIndex) {
+      case 0:
+        return <Certificados handleNext={this.handleNext} handleBack={this.handleBack} />;
+      case 1:
+        return "ingresa tu cedula";
+     
+      default:
+        return <Error />;
+    }
   }
-}
+  constructor(props){
+    super(props);
+    this.state ={
+      activeStep: 0
+    }
+    this.handleNext =this.handleNext.bind(this);
+    this.handleBack =this.handleBack.bind(this);
 
-class FormCertificado extends React.Component {
-  state = {
-    activeStep: 0,
-  };
+    
+}
+ 
 
   handleNext = () => {
     this.setState(state => ({
@@ -75,7 +83,7 @@ class FormCertificado extends React.Component {
     const { activeStep } = this.state;
     return (
       <div className={classes.root}>
-       <h2 className={classes.cont} >Descarga tu Certificado</h2>
+       <h2 className={classes.cont} >Download your Certificate</h2>
         <Stepper activeStep={activeStep} alternativeLabel>
        
           {steps.map(label => {
@@ -97,20 +105,8 @@ class FormCertificado extends React.Component {
             </div>
           ) : (
             <div   >
-              <div className={classes.cont}>{getStepContent(activeStep)}</div>
-              <div  className={classes.cont} >
-                <Button
-                  disabled={activeStep === 0}
-                  onClick={this.handleBack}
-                  className={classes.backButton}
-                >
-                  Back
-                </Button>
-                <Button variant="contained"  
-                   color="primary" onClick={this.handleNext}>
-                  {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                </Button>
-              </div>
+              <div className={classes.cont}>{this.getStepContent(activeStep)}</div>
+         
             </div>
           )}
         </div>
@@ -119,11 +115,11 @@ class FormCertificado extends React.Component {
   }
 }
 
-FormCertificado.propTypes = {
+ContainerCertificado.propTypes = {
   classes: PropTypes.object,
 };
 
-export default withStyles(styles)(FormCertificado);
+export default withStyles(styles)(ContainerCertificado);
 
 
 

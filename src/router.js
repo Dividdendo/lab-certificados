@@ -5,15 +5,15 @@ import {
 } from 'react-router-dom';
 //import shared
 //importar componentes view 
-import show from './components/Show';
-import Create from './components/Create';
-import FormCertificado from './components/certificacion/components/form-certificado';
+//import show from './components/Show';
+import CreateUser from './components/certificacion/components/createuser';
+import ContainerCertificado from './components/certificacion/components/Containercertificado';
 function AppRouter() {
     return  (
             <div>
             <Switch>
-            <Route exact path="/" component={FormCertificado} />
-            <Route  path="/create" component={Create} />
+            <Route exact path="/" component={ContainerCertificado} />
+            <Route  path="/create" component={CreateUser} />
             <Route component={NoMatch} />
             </Switch>
             </div> 

@@ -1,36 +1,106 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
-import Avatar from '@material-ui/core/Avatar';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 
-const styles = {
+import {firebase} from '../../../Firebase';
+
+
+
+const styles = theme => ( {
   row: {
     display: 'flex',
     justifyContent: 'center',
   },
-  avatar: {
-    margin: 10,
+  container: {
+    display: 'flex',
+    flexWrap: 'wrap',
   },
-  bigAvatar: {
-    width: 60,
-    height: 60,
+  textField: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    width: 200,
   },
-};
+  dense: {
+    marginTop: 19,
+  },
+  menu: {
+    width: 200,
+  },
+});
 
-function Certificados(props) {
-  const { classes } = props;
+
+class Certificados extends React.Component{
+  constructor() {
+    super();
+    this.refDatbase = firebase.firestore().collection('profesores');
+    this.state = {
+      apellido: '',
+      nombre: '',
+
+    };
+  }
+  onSubmit = (e) => {
+    e.preventDefault();
+    const { apellido } = this.state;
+    this.refDatbase.where("Apellido", "==", 'Hola leguizamon').get()
+    .then(snapshot => {
+      if(!snapshot.empty){
+       if(snapshot.docs.length == 1){
+      snapshot.forEach(doc => {
+        console.log(doc.id, '=>', doc.data());
+       this.props.handleNext();
+      });
+    }else{
+      console.log("Error en base de datos no es un dato unico.");
+    }
+    }else{
+      console.log("error usuario no encontrado");
+    }
+    })
+    .catch(err => {
+      console.log('Error getting documents', err);
+    });
+  }
+
+  syncField(ev, fieldName){ // data form
+    let element =ev.target;
+    let value = element.value; 
+    let jsonState= {};
+    jsonState[fieldName]= value;
+    this.setState(jsonState);
+}
+render() {
+  const { classes } = this.props; 
   return (
-    <div className={classes.row}>
-      <Avatar alt="Remy Sharp" src="http://www.dividendoporcolombia.org/es/wp-content/uploads/2018/03/LOGODXC-01-2.jpg"
-       className={classes.bigAvatar} />
-      <Avatar
-        alt="Adelle Charles"
-        src="https://tentulogo.com/wp-content/uploads/IBM-logo-1.jpg"
-        className={classNames(classes.avatar, classes.bigAvatar)}
-      />
+    <div >
+      <TextField
+          id="standard-with-placeholder"
+          label="Ingrese documento"
+          placeholder="# Cedula"
+          type="number"
+          ref="apellido"
+          name="apellido"
+          onChange={(e) => this.syncField(e,'apellido')}
+          className={classes.textField}
+          fullWidth={true}
+          margin="normal"
+        /> 
+             <div  className={classes.cont} >
+             <Button variant="contained"  
+                   color="primary"
+                    onClick={this.onSubmit}>
+        search
+      </Button>
+              </div>
+       
+
     </div>
+   
   );
+}
+
 }
 
 Certificados.propTypes = {

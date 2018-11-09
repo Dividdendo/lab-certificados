@@ -5,10 +5,11 @@ import 'firebase/firestore';
 const settings = {timestampsInSnapshots: true};
 
 const config = {
-  
+   
 };
-firebase.initializeApp(config);
 
+ let app =firebase.initializeApp(config);
+const db = firebase.firestore(app);
 firebase.firestore().settings(settings);
 
-export default firebase;
+export {firebase, db};

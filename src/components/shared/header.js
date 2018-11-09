@@ -62,7 +62,7 @@ class MenuAppBar extends React.Component {
             </IconButton>
        
             <Typography variant="h6" color="inherit" className={classes.grow}>
-              Certificados 
+            Certificate 
             </Typography>
        
             {auth && (
