@@ -11,7 +11,7 @@ import Typography from '@material-ui/core/Typography';
 //import shared
 import Error from '../../shared/error';
 import Certificados from './certificados';
-
+import DetalleCertificado from './detallesCertificado';
 
 const styles = theme => ({
   root: {
@@ -39,9 +39,11 @@ class ContainerCertificado extends React.Component {
   getStepContent(stepIndex) {
     switch (stepIndex) {
       case 0:
-        return <Certificados handleNext={this.handleNext} handleBack={this.handleBack} />;
+        return <Certificados handleNext={this.handleNext}  persondata={this.persondata} />;
       case 1:
-        return "ingresa tu cedula";
+        return (<DetalleCertificado handleNext={this.handleNext}  // adelantar
+           teacher={this.state.teacher} // persona 
+             />);
      
       default:
         return <Error />;
@@ -50,12 +52,18 @@ class ContainerCertificado extends React.Component {
   constructor(props){
     super(props);
     this.state ={
-      activeStep: 0
+      activeStep: 0,
+      teacher: {},
     }
     this.handleNext =this.handleNext.bind(this);
     this.handleBack =this.handleBack.bind(this);
 
     
+}
+persondata =(data)=> {
+  this.setState(state => ({
+    teacher: data,
+  }));
 }
  
 
@@ -83,7 +91,7 @@ class ContainerCertificado extends React.Component {
     const { activeStep } = this.state;
     return (
       <div className={classes.root}>
-       <h2 className={classes.cont} >Download your Certificate</h2>
+       <h2 className={classes.cont} >Download your Certificate  </h2>
         <Stepper activeStep={activeStep} alternativeLabel>
        
           {steps.map(label => {

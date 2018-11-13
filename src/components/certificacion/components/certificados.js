@@ -3,10 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-
 import {firebase} from '../../../Firebase';
-
-
 
 const styles = theme => ( {
   row: {
@@ -29,28 +26,27 @@ const styles = theme => ( {
     width: 200,
   },
 });
-
-
 class Certificados extends React.Component{
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.refDatbase = firebase.firestore().collection('profesores');
     this.state = {
-      apellido: '',
-      nombre: '',
-
+      Documento: '',
+      Nombre: '',
+      Correo:'',
+      Celular: ''
     };
   }
   onSubmit = (e) => {
-    e.preventDefault();
-    const { apellido } = this.state;
-    this.refDatbase.where("Apellido", "==", 'Hola leguizamon').get()
+    const { Documento } = this.state;
+    this.refDatbase.where("Documento", "==", Documento).get()
     .then(snapshot => {
       if(!snapshot.empty){
-       if(snapshot.docs.length == 1){
+       if(snapshot.docs.length === 1){
       snapshot.forEach(doc => {
+      this.props.persondata(doc.data()); // dar los valores al componente padre
         console.log(doc.id, '=>', doc.data());
-       this.props.handleNext();
+      this.props.handleNext();
       });
     }else{
       console.log("Error en base de datos no es un dato unico.");
@@ -80,9 +76,9 @@ render() {
           label="Ingrese documento"
           placeholder="# Cedula"
           type="number"
-          ref="apellido"
-          name="apellido"
-          onChange={(e) => this.syncField(e,'apellido')}
+          ref="Documento"
+          name="Documento"
+          onChange={(e) => this.syncField(e,'Documento')}
           className={classes.textField}
           fullWidth={true}
           margin="normal"
@@ -94,13 +90,9 @@ render() {
         search
       </Button>
               </div>
-       
-
     </div>
-   
   );
 }
-
 }
 
 Certificados.propTypes = {
