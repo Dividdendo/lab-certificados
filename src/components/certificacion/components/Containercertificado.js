@@ -5,9 +5,12 @@ import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+
+import Snackbar from '@material-ui/core/Snackbar';
 
 
+
+import MySnackbarContent from '../../shared/error/errors';
 //import shared
 import Error from '../../shared/error';
 import Certificados from './certificados';
@@ -39,10 +42,12 @@ class ContainerCertificado extends React.Component {
   getStepContent(stepIndex) {
     switch (stepIndex) {
       case 0:
-        return <Certificados handleNext={this.handleNext}  persondata={this.persondata} />;
+        return <Certificados handleNext={this.handleNext}  persondata={this.persondata}  msgbn={this.msgbn}/>;
       case 1:
-        return (<DetalleCertificado handleNext={this.handleNext}  // adelantar
+        return (<DetalleCertificado handleNext={this.handleNext}  // adelantar 
+          handleBack={this.handleBack}
            teacher={this.state.teacher} // persona 
+           msgbn={this.msgbn} // mesaje
              />);
      
       default:
@@ -54,6 +59,8 @@ class ContainerCertificado extends React.Component {
     this.state ={
       activeStep: 0,
       teacher: {},
+      open: false,
+      msgMo: ''
     }
     this.handleNext =this.handleNext.bind(this);
     this.handleBack =this.handleBack.bind(this);
@@ -73,6 +80,13 @@ persondata =(data)=> {
     }));
   };
 
+ msgbn = (mensage) => {
+    this.setState(state => ({
+      open: true, 
+      msgMo: mensage
+    }));
+  }
+
   handleBack = () => {
     this.setState(state => ({
       activeStep: state.activeStep - 1,
@@ -84,6 +98,14 @@ persondata =(data)=> {
       activeStep: 0,
     });
   };
+  
+handleClose = (event, reason) => {
+  if (reason === 'clickaway') {
+    return;
+  }
+
+  this.setState({ open: false });
+};
 
   render() {
     const { classes } = this.props;
@@ -92,6 +114,21 @@ persondata =(data)=> {
     return (
       <div className={classes.root}>
        <h2 className={classes.cont} >Download your Certificate  </h2>
+       <Snackbar
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          open={this.state.open}
+          autoHideDuration={6000}
+          onClose={this.handleClose}
+        >
+          <MySnackbarContent
+            onClose={this.handleClose}
+            variant="success"
+            message={this.state.msgMo}
+          />
+          </Snackbar>
         <Stepper activeStep={activeStep} alternativeLabel>
        
           {steps.map(label => {
@@ -104,12 +141,12 @@ persondata =(data)=> {
         </Stepper>
         <div>
           {this.state.activeStep === steps.length ? (
-            <div>
-                
-              <Typography className={classes.cont}> Ver Certificado y descargar</Typography>
-              
-              <Button onClick={this.handleReset}>Reset</Button>
-              <Button variant="contained" color="primary"   >Confirmar</Button>
+            <div >
+
+             <p className={classes.cont} >Descarga finalizada correctamente.</p> 
+             <div className={classes.cont}>
+             <Button    variant="contained" color="primary"  onClick={this.handleReset}  > Terminar</Button>
+             </div>
             </div>
           ) : (
             <div   >

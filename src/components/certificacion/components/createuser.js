@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import {firebase} from '../../../Firebase';
 import { Link } from 'react-router-dom';
 
@@ -41,7 +40,7 @@ class CreateUser extends Component {
   }
 
   render() {
-    const { title, description, author } = this.state;
+    const {  description, author } = this.state;
     return (
       <div class="container">
         <div class="panel panel-default">

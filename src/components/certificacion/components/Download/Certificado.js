@@ -27,7 +27,7 @@ class Certificado extends React.Component {
                 CC {this.props.teacher.Documento}
                 </p>
         </div>
-        <img style={Styles.img} src={CertifIBM} />
+        <img style={Styles.img} src={CertifIBM} alt="img certtificado" />
 </Page>
     )
 

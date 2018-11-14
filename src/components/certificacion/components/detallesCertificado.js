@@ -27,20 +27,23 @@ const styles = theme => ({
 
 class DetalleCertificado extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-        
-          };
-    }
+
+    
+callmesagge =()=> {
+  this.props.msgbn('La descarga a comenzado esto puede tardar unos minutos.');
+}
+
+handleBack = () => {
+  this.props.handleBack();
+};
     render() {
         const { classes } = this.props;
         return (
             <div >
                 <div className={classes.center}>
-<Button  variant="contained" size="small" >Reset</Button> 
-            <PrintButton id={"Certificate"}  label={
-                <Button variant="contained" size="small" >
+           <Button onClick={this.handleBack}  variant="contained" size="small" >Reset</Button> 
+            <PrintButton handleNext={this.props.handleNext}   msgbn={this.props.msgbn}     id={"Certificate"}  label={
+                <Button onClick={this.callmesagge} variant="contained" size="small" >
                 <SaveIcon className={classNames( classes.iconSmall)} />
                 Save
               </Button>
@@ -51,9 +54,8 @@ class DetalleCertificado extends React.Component {
           );
     }
 }
-
-DetalleCertificado.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
+    DetalleCertificado.propTypes = {
+      classes: PropTypes.object.isRequired,
+    };
 
 export default withStyles(styles)(DetalleCertificado);
